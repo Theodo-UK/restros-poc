@@ -1,0 +1,81 @@
+---
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - master
+      - develop
+    # Only consider those paths to trigger the action
+    paths:
+      - 'apps/docs/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm*'
+      - '.github/**'
+      - 'tsconfig.base.json'
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    # Only consider those paths to trigger the action
+    paths:
+      - 'apps/docs/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm*'
+      - '.github/**'
+      - 'tsconfig.base.json'
+
+name: 🔍 Continuous integration for docs app
+
+jobs:
+  integration:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: ['ubuntu-22.04']
+        node: ['18']
+
+    steps:
+      - name: 📦 Check out the codebase
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/pnpm-install
+
+      # see https://github.com/vercel/next.js/pull/27362
+      - name: ♻️ Restore "docs" app build from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/apps/docs/.next/cache
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/**/tsconfig.tsbuildinfo
+          key: ${{ runner.os }}-web-${{ hashFiles('pnpm*.yaml') }}-${{ hashFiles('apps/docs/src/**.[jt]sx?', 'apps/docs/src/**.json') }}
+          restore-keys: |
+            ${{ runner.os }}-web-${{ hashFiles('pnpm*.yaml') }}-
+
+      - name: 📝 Typecheck
+        working-directory: apps/web
+        run: |
+          pnpm lint:types
+
+      - name: 🚨 Linter
+        working-directory: apps/web
+        run: |
+          pnpm lint
+
+      - name: 🏗 Build docs-app
+        working-directory: apps/web
+        run: |
+          pnpm --filter=docs build

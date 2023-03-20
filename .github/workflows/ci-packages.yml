@@ -1,0 +1,75 @@
+---
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - master
+      - develop
+    # Only consider those paths to trigger the action
+    paths:
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm*'
+      - '.github/**'
+      - 'tsconfig.base.json'
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    # Only consider those paths to trigger the action
+    paths:
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm*'
+      - '.github/**'
+      - 'tsconfig.base.json'
+
+name: 🔍 Continuous integration for packages
+
+jobs:
+  integration:
+    name: Node ${{ matrix.node }} - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: ['ubuntu-22.04']
+        node: ['18']
+
+    steps:
+      - name: 📦 Check out the codebase
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/pnpm-install
+
+      - name: ♻️ Restore packages cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/**/tsconfig.tsbuildinfo
+
+          key: ${{ runner.os }}-packages-cache-${{ hashFiles('**/pnpm*.yaml') }}-${{ hashFiles('packages/**.[jt]sx?', 'packages/**.json') }}
+          restore-keys: |
+            ${{ runner.os }}-packages-cache-${{ hashFiles('**/pnpm*.yaml') }}-
+
+      # Typecheck packages that have changed + packages and apps that depends on them (--from & --since)
+      # That allows to see if we're introducing "surface" regressions (just the types)
+      - name: 📝 Typecheck
+        run: |
+          pnpm --filter "...[origin/master]" --changed-files-ignore-pattern="apps/*" run lint:types
+
+      # Lint packages that have changed (--include & --since)
+      - name: 🚨 Linter
+        run: |
+          pnpm --filter "...[origin/master]" --changed-files-ignore-pattern="apps/*" run lint

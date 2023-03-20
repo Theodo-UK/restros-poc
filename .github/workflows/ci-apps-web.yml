@@ -1,0 +1,116 @@
+---
+on: # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - master
+      - develop
+    # Only consider those paths to trigger the action
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm*'
+      - '.github/**'
+      - 'tsconfig.base.json'
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    # Only consider those paths to trigger the action
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm*'
+      - '.github/**'
+      - 'tsconfig.base.json'
+
+name: 🔍 Continuous integration for web app
+
+jobs:
+  integration:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: ['ubuntu-22.04']
+        node: ['18']
+
+    steps:
+      - name: 📦 Check out the codebase
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: 📥 Monorepo install
+        uses: ./.github/actions/pnpm-install
+
+      # see https://github.com/vercel/next.js/pull/27362
+      - name: ♻️ Restore "web" app build from cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/apps/web/.next/cache
+            ${{ github.workspace }}/.cache
+            ${{ github.workspace }}/**/tsconfig.tsbuildinfo
+          key: ${{ runner.os }}-web-${{ hashFiles('pnpm*.yaml') }}-${{ hashFiles('apps/web/src/**.[jt]sx?', 'apps/web/src/**.json') }}
+          restore-keys: |
+            ${{ runner.os }}-web-${{ hashFiles('pnpm*.yaml') }}-
+
+      - name: 📝 Typecheck
+        working-directory: apps/web
+        run: |
+          pnpm lint:types
+
+      - name: 🚨 Linter
+        working-directory: apps/web
+        run: |
+          pnpm lint
+
+      - name: 🧪 Unit tests
+        working-directory: apps/web
+        run: |
+          pnpm test
+
+      - name: 🏗 Build web-app
+        working-directory: apps/web
+        run: |
+          pnpm --filter=web build
+        env:
+          # Speed up build: they are linted in a previous step
+          NEXT_IGNORE_ESLINT: true
+          # Speed up build: they are type-checked in a previous step
+          NEXT_IGNORE_TYPE_CHECK: true
+          # Speed up build: don't run if not needed, enable if it becomes needed
+          NEXT_DISABLE_SOURCEMAPS: true
+          # Don't send telemetry for ci
+          NEXT_TELEMETRY_DISABLED: true
+          # To allow checking size-limits
+          DISABLE_SENTRY: false
+          # Fully disable sentry upload
+          SENTRY_UPLOAD_DRY_RUN: true
+
+      - name: 📉 Check browser bundle size limits
+        working-directory: apps/web
+        run: |
+          pnpm --filter=web lint:size
+
+      - name: 🌎 Ecmascript checks for build files
+        working-directory: apps/web
+        run: |
+          pnpm --filter=web lint:dist
+
+      - name: 📤 Upload coverage report to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./apps/web/coverage/coverage-final.json
+          flags: web
