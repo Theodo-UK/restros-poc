@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { MOCK_RESTAURANTS } from '@/utils/restaurants'
+import type { Restaurant } from '@/utils/restaurants'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id: restaurantId } = req.query
 
   const getRestaurantById = (id: number) => {
-    return MOCK_RESTAURANTS.find(restaurant => restaurant.id === id)
+    return MOCK_RESTAURANTS.find((restaurant: Restaurant) => restaurant.id === id)
   }
 
   if (restaurantId) {
