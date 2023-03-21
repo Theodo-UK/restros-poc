@@ -37,7 +37,7 @@ const SENTRY_TRACING = trueEnv.includes(process.env?.SENTRY_TRACING ?? 'false')
  * to deliver an image or deploy the files.
  * @link https://nextjs.org/docs/advanced-features/source-maps
  */
-const disableSourceMaps = true;
+const disableSourceMaps = true
 
 if (disableSourceMaps) {
   console.log(
@@ -55,6 +55,14 @@ const nextConfig = {
   productionBrowserSourceMaps: !disableSourceMaps,
   i18n: nextI18nConfig.i18n,
   optimizeFonts: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*',
+      },
+    ],
+  },
 
   // @link https://beta.nextjs.org/docs/api-reference/next.config.js#transpilepackages
   transpilePackages: ['@wayofdev/ui'],
@@ -171,10 +179,8 @@ const nextConfig = {
 
 let config = nextConfig
 
-
 const { sentry, ...rest } = config
 config = rest
-
 
 if (process.env.ANALYZE === 'true') {
   config = withBundleAnalyzer({
