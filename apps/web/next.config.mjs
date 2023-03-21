@@ -37,7 +37,7 @@ const SENTRY_TRACING = trueEnv.includes(process.env?.SENTRY_TRACING ?? 'false')
  * to deliver an image or deploy the files.
  * @link https://nextjs.org/docs/advanced-features/source-maps
  */
-const disableSourceMaps = trueEnv.includes(process.env?.NEXT_DISABLE_SOURCEMAPS ?? 'false')
+const disableSourceMaps = true;
 
 if (disableSourceMaps) {
   console.log(
@@ -54,7 +54,7 @@ const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: !disableSourceMaps,
   i18n: nextI18nConfig.i18n,
-  optimizeFonts: true,
+  optimizeFonts: false,
 
   // @link https://beta.nextjs.org/docs/api-reference/next.config.js#transpilepackages
   transpilePackages: ['@wayofdev/ui'],
@@ -66,7 +66,7 @@ const nextConfig = {
 
   // @link https://nextjs.org/docs/advanced-features/compiler#minification
   // Sometimes buggy so enable/disable when debugging.
-  swcMinify: true,
+  swcMinify: false,
 
   compiler: {
     // emotion: true,
@@ -171,43 +171,14 @@ const nextConfig = {
 
 let config = nextConfig
 
-if (!DISABLE_SENTRY) {
-  config = withSentryConfig(config, {
-    // Additional config options for the Sentry Webpack plugin. Keep in mind that
-    // the following options are set automatically, and overriding them is not
-    // recommended:
-    //   release, url, org, project, authToken, configFile, stripPrefix,
-    //   urlPrefix, include, ignore
-    // For all available options, see:
-    // @link https://github.com/getsentry/sentry-webpack-plugin#options.
 
-    // Attempts a dry run (useful for dev environments).
-    // Defaults to false, but may be automatically set to true in development environments
-    // by some framework integrations (Next.JS, possibly others).
-    dryRun: SENTRY_UPLOAD_DRY_RUN,
+const { sentry, ...rest } = config
+config = rest
 
-    // Suppresses all logs (useful for --json option). Defaults to false.
-    silent: isProd,
-
-    // release: '',
-    // url: '',
-    // org: '',
-    // project: '',
-    // authToken: '',
-    // configFile: '',
-    // stripPrefix: '',
-    // urlPrefix: '',
-    // include: '',
-    // ignore: '',
-  })
-} else {
-  const { sentry, ...rest } = config
-  config = rest
-}
 
 if (process.env.ANALYZE === 'true') {
   config = withBundleAnalyzer({
-    enabled: true,
+    enabled: false,
   })(config)
 }
 
