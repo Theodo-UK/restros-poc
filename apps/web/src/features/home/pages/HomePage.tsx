@@ -4,9 +4,9 @@ import { Button } from '@wayofdev/ui/src/base/button/Button'
 import { useTranslation } from 'next-i18next'
 import { NextSeo } from 'next-seo'
 import type { FC } from 'react'
+import { homeConfig } from '../home.config'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MainNav } from '@/components/nav/MainNav'
-import { homeConfig } from '../home.config'
 
 export const HomePage: FC = () => {
   const { t } = useTranslation(homeConfig.i18nNamespaces)
