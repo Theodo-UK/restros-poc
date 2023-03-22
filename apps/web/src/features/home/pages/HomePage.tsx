@@ -1,7 +1,9 @@
 import { Banner } from '@wayofdev/ui/src/base/banner/Banner'
 import type { InferGetServerSidePropsType } from 'next'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { NextSeo } from 'next-seo'
+import React from 'react'
 import { homeConfig } from '../home.config'
 import { Card } from '@/components/Card'
 import { MainLayout } from '@/components/layout/MainLayout'
@@ -10,6 +12,7 @@ import type { getServerSideProps } from '@/pages/index'
 
 export const HomePage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation(homeConfig.i18nNamespaces)
+  const router = useRouter()
 
   return (
     <>
@@ -27,7 +30,9 @@ export const HomePage = (props: InferGetServerSidePropsType<typeof getServerSide
             title={restaurant.name}
             imageSrc={restaurant.image_url}
             desc={restaurant.address}
-            onClick={() => {}}
+            onClick={() => {
+              router.push(`restaurants/${restaurant.id}`)
+            }}
           />
         ))}
       </MainLayout>
