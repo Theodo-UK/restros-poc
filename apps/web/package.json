@@ -28,6 +28,7 @@
     "@wayofdev/google-tag-manager": "workspace:*",
     "@wayofdev/lint-staged-config": "^2.0.2",
     "@wayofdev/ui": "workspace:*",
+    "axios": "^1.3.4",
     "clsx": "^1.2.1",
     "i18next": "^22.4.10",
     "next": "^13.2.3",
