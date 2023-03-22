@@ -1,7 +1,6 @@
 import axios from 'axios'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { HomePage } from '@/features/home/pages'
-import { getServerTranslations } from '@/lib/i18n'
 
 export default function DemoRoute(_props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return <HomePage {..._props} />
