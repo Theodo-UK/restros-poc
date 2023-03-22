@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import React from 'react'
 import { DetailsPage } from '@/features/home/pages'
 
 export default function DemoRoute(props: InferGetServerSidePropsType<typeof getServerSideProps>) {

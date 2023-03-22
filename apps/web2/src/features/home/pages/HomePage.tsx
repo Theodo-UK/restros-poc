@@ -8,7 +8,7 @@ import { homeConfig } from '../home.config'
 import { Card } from '@/components/Card'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MainNav } from '@/components/nav/MainNav'
-import type { Restaurant } from '@/pages/api/data'
+import type { Restaurant } from '@/pages/api/restaurants/data'
 
 export const HomePage: FC = () => {
   const { t } = useTranslation(homeConfig.i18nNamespaces)
@@ -16,7 +16,7 @@ export const HomePage: FC = () => {
 
   useEffect(() => {
     ;(async () => {
-      const { data } = await axios.get('http://localhost:3002/api/restaurants')
+      const { data } = await axios.get('http://localhost:3001/api/restaurants')
 
       setRestaurants(data)
     })()
