@@ -1,4 +1,5 @@
-import './globals.css'
+// These styles apply to every route in the application
+import './globals.css';
 
 export const metadata = {
   title: 'Create Next App',
@@ -8,11 +9,11 @@ export const metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body>{children}</body>
     </html>
-  )
+  );
 }
