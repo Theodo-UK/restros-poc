@@ -7,9 +7,10 @@ interface Props {
   imageSrc: string
   desc: string
   onClick: () => void
+  testId?: string
 }
 
-export const Card: FC<Props> = ({ title, imageSrc, desc, onClick }) => {
+export const Card: FC<Props> = ({ title, imageSrc, desc, onClick, testId }) => {
   return (
     <div className="m-3 mx-auto w-6/12 rounded-md border border-gray-800 bg-white px-4 py-3">
       <div className="flex items-center">
@@ -23,7 +24,7 @@ export const Card: FC<Props> = ({ title, imageSrc, desc, onClick }) => {
         <div className="ml-4">
           <h4 className="mb-2 text-lg">{title}</h4>
           <p className="mb-2 text-base">{desc}</p>
-          <Button onClick={onClick} label="Details">
+          <Button testId={testId} onClick={onClick} label="Details">
             Details
           </Button>
         </div>

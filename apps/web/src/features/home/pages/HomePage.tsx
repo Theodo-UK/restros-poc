@@ -9,6 +9,7 @@ import { Card } from '@/components/Card'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MainNav } from '@/components/nav/MainNav'
 import type { getServerSideProps } from '@/pages/index'
+import type { Restaurant } from '@/utils/restaurants'
 
 export const HomePage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { t } = useTranslation(homeConfig.i18nNamespaces)
@@ -24,7 +25,7 @@ export const HomePage = (props: InferGetServerSidePropsType<typeof getServerSide
         <Banner message="Something big will happen soon!" />
         <MainNav />
         <h1 className="my-6 mx-auto text-center text-2xl font-bold">Restros UK</h1>
-        {props.data.map(restaurant => (
+        {props.data.map((restaurant: Restaurant) => (
           <Card
             key={restaurant.name}
             title={restaurant.name}
@@ -33,6 +34,7 @@ export const HomePage = (props: InferGetServerSidePropsType<typeof getServerSide
             onClick={() => {
               router.push(`restaurants/${restaurant.id}`)
             }}
+            testId={restaurant.name}
           />
         ))}
       </MainLayout>

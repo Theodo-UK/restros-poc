@@ -4,9 +4,9 @@ import { useTranslation } from 'next-i18next'
 import { NextSeo } from 'next-seo'
 import type { FC } from 'react'
 import React from 'react'
-import { homeConfig } from '../home.config'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MainNav } from '@/components/nav/MainNav'
+import { homeConfig } from '../home.config'
 import type { Restaurant } from '@/utils/restaurants'
 
 type DetailsPageProps = {
