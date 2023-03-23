@@ -30,6 +30,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * Button contents
    */
   label: string
+  /**
+   * Playwright test id
+   */
+  testId?: string
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -37,12 +41,13 @@ export const Button: FC<ButtonProps> = ({
   size = Size.Base,
   backgroundColor,
   label,
+  testId,
   ...properties
 }) => {
   const baseClasses = 'inline-flex items-center border focus:outline-none font-medium shadow-sm'
 
   return (
-    <button className={[size, mode, baseClasses].join(' ')} {...properties}>
+    <button data-testid={testId} className={[size, mode, baseClasses].join(' ')} {...properties}>
       {label}
     </button>
   )

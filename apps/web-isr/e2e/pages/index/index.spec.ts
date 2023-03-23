@@ -1,17 +1,11 @@
 import { test, expect } from '@playwright/test'
-import homeJsonEn from '@wayofdev/common-i18n/locales/en/demo.json'
-import homeJsonFr from '@wayofdev/common-i18n/locales/fr/demo.json'
+import axios from 'axios'
 
-test.describe('Demo page', () => {
-  test('should have the title in english by default', async ({ page }) => {
-    await page.goto('/')
-    const title = await page.title()
-    expect(title).toBe(homeJsonEn.page.title)
-  })
-
-  test('should have the title in french', async ({ page }) => {
-    await page.goto('/fr')
-    const title = await page.title()
-    expect(title).toBe(homeJsonFr.page.title)
+test.describe('Home page', () => {
+  test('Restaurant card click navigates to details page', async ({ page }) => {
+    await page.goto('http://localhost:3000/')
+    const { data: firstRestaurant } = await axios.get('http://localhost:3000/api/restaurants/1')
+    await page.getByTestId(firstRestaurant.name).click()
+    await expect(page).toHaveURL(/.*1/)
   })
 })
