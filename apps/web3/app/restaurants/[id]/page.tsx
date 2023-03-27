@@ -2,7 +2,6 @@ import axios from 'axios'
 import React from 'react'
 import { Restaurant } from '../../api/data'
 import Image from 'next/image'
-import { GetServerSidePropsContext } from 'next'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,8 +16,8 @@ const getRestaurantDetails = async (restaurantId: string) => {
   }
 }
 
-export default async function DetailsPage({ params }: GetServerSidePropsContext) {
-  const restaurant: Restaurant = await getRestaurantDetails(params?.id as string)
+export default async function DetailsPage({ params }: { params: { id: string } }) {
+  const restaurant: Restaurant = await getRestaurantDetails(params?.id)
 
   if (!restaurant) {
     return null

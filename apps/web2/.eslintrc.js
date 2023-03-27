@@ -38,6 +38,8 @@ module.exports = {
     // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md
     'jsx-a11y/anchor-is-valid': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
+    'import/order': 'off',
+    'import/no-unresolved': 'off',
   },
   overrides: [
     {

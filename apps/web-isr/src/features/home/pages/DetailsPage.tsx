@@ -1,10 +1,8 @@
 import { Banner } from '@wayofdev/ui/src/base/banner/Banner'
 import Image from 'next/image'
-import { useTranslation } from 'next-i18next'
 import { NextSeo } from 'next-seo'
 import type { FC } from 'react'
 import React from 'react'
-import { homeConfig } from '../home.config'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { MainNav } from '@/components/nav/MainNav'
 import type { Restaurant } from '@/utils/restaurants'
@@ -14,12 +12,10 @@ type DetailsPageProps = {
 }
 
 export const DetailsPage: FC<DetailsPageProps> = ({ restaurant }) => {
-  const { t } = useTranslation(homeConfig.i18nNamespaces)
-
   return (
     <>
       <NextSeo
-        title={t('demo:page.title')}
+        title="Restros"
         description="Web-app nextjs monorepo example, https://github.com/wayofdev/nextjs-monorepo-example"
       />
       <MainLayout>

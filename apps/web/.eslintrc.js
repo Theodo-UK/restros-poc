@@ -39,6 +39,7 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'import/order': 'off',
+    'import/no-unresolved': 'off',
   },
   overrides: [
     {

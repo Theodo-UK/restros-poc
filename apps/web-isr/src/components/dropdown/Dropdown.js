@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
 const Dropdown = ({
@@ -30,7 +30,7 @@ const Dropdown = ({
     <Menu as="div" className="relative">
       {({ open }) => (
         <>
-          <Menu.Button as={React.Fragment}>{trigger}</Menu.Button>
+          <Menu.Button as={Fragment}>{trigger}</Menu.Button>
           <Transition
             show={open}
             enter="transition ease-out duration-200"

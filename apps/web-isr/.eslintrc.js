@@ -28,9 +28,17 @@ module.exports = {
     '@wayofdev/eslint-config-bases/mdx',
     // Add specific rules for nextjs
     'plugin:@next/next/core-web-vitals',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     // Apply prettier and disable incompatible rules
     '@wayofdev/eslint-config-bases/prettier-plugin',
   ],
+  settings: {
+    'import/resolver': {
+      typescript: true,
+      node: true,
+    },
+  },
   rules: {
     // https://github.com/vercel/next.js/discussions/16832
     '@next/next/no-img-element': 'off',
@@ -38,6 +46,7 @@ module.exports = {
     // https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md
     'jsx-a11y/anchor-is-valid': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
+    'import/no-unresolved': 'off',
     'import/order': 'off',
   },
   overrides: [

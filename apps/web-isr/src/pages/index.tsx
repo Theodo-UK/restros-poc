@@ -1,13 +1,15 @@
-import axios from 'axios'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { GetStaticProps, InferGetStaticPropsType } from 'next'
+import React from 'react'
 import { HomePage } from '@/features/home/pages'
+import { MOCK_RESTAURANTS } from '@/utils/restaurants'
 
-export default function DemoRoute(_props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  return <HomePage {..._props} />
+export default function DemoRoute(props: InferGetStaticPropsType<typeof getStaticProps>) {
+  return <HomePage restaurant={props.data} />
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { data } = await axios.get('http://localhost:3003/api/restaurants')
+export const getStaticProps: GetStaticProps = async () => {
+  // Normally would write an asynchronous API request, but since there is no live DB and web server, a fake DB query is written for demonstration purposes
+  const data = MOCK_RESTAURANTS
 
-  return { props: { data } }
+  return { props: { data }, revalidate: 10 }
 }
