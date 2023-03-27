@@ -1,7 +1,5 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { appWithTranslation } from 'next-i18next'
-import nextI18nextConfig from '../../next-i18next.config'
 import { AppProviders } from '../AppProviders'
 
 /**
@@ -59,6 +57,4 @@ MyApp.getInitialProps = async appContext => {
 }
 */
 
-export default appWithTranslation(MyApp, {
-  ...nextI18nextConfig,
-})
+export default MyApp

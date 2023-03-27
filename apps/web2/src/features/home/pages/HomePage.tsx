@@ -1,17 +1,14 @@
-import { Banner } from '@wayofdev/ui/src/base/banner/Banner'
+import { useRouter } from 'next/router'
 import axios from 'axios'
-import { useTranslation } from 'next-i18next'
 import { NextSeo } from 'next-seo'
 import type { FC } from 'react'
 import { useEffect, useState } from 'react'
-import { homeConfig } from '../home.config'
 import { Card } from '@/components/Card'
 import { MainLayout } from '@/components/layout/MainLayout'
-import { MainNav } from '@/components/nav/MainNav'
 import type { Restaurant } from '@/pages/api/restaurants/data'
 
 export const HomePage: FC = () => {
-  const { t } = useTranslation(homeConfig.i18nNamespaces)
+  const router = useRouter()
   const [restaurants, setRestaurants] = useState<Restaurant[]>()
 
   useEffect(() => {
@@ -25,12 +22,10 @@ export const HomePage: FC = () => {
   return (
     <>
       <NextSeo
-        title={t('demo:page.title')}
+        title="Restros"
         description="Web-app nextjs monorepo example, https://github.com/wayofdev/nextjs-monorepo-example"
       />
       <MainLayout>
-        <Banner message="Something big will happen soon!" />
-        <MainNav />
         <h1 className="my-6 mx-auto text-center text-2xl font-bold">Restros US</h1>
         {restaurants?.map(restaurant => (
           <Card
@@ -38,8 +33,7 @@ export const HomePage: FC = () => {
             title={restaurant.name}
             imageSrc={restaurant.image_url}
             desc={restaurant.address}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onClick={() => {}}
+            onClick={() => router.push(`/restaurant/${restaurant.id}`)}
           />
         ))}
       </MainLayout>
