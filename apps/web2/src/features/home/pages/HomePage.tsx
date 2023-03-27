@@ -38,6 +38,7 @@ export const HomePage: FC = () => {
             title={restaurant.name}
             imageSrc={restaurant.image_url}
             desc={restaurant.address}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             onClick={() => {}}
           />
         ))}

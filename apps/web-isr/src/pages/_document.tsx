@@ -1,9 +1,5 @@
-import { Analytics } from '@vercel/analytics/react'
-import { FacebookPixelNoScript } from '@wayofdev/facebook-pixel/src'
-import { GoogleTagManagerNoScript } from '@wayofdev/google-tag-manager/src'
 import type { DocumentContext, DocumentInitialProps } from 'next/document'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { i18n } from '../../next-i18next.config'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
@@ -11,10 +7,8 @@ class MyDocument extends Document {
   }
 
   render() {
-    const locale = this.props.locale ?? i18n.defaultLocale
-
     return (
-      <Html lang={locale}>
+      <Html>
         <Head>
           {/* Favicons, Google site verification and other common meta tags across the site. */}
           <meta charSet="utf-8" />
@@ -46,9 +40,6 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-        <Analytics />
-        <GoogleTagManagerNoScript />
-        <FacebookPixelNoScript />
       </Html>
     )
   }

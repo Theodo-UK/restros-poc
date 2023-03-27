@@ -6,4 +6,5 @@ import { MOCK_RESTAURANTS } from '@/utils/restaurants'
 export default function handler(_req: NextApiRequest, res: NextApiResponse<Restaurant[]>) {
   // Get data from your database
   res.status(200).json(MOCK_RESTAURANTS)
+  // res.status(200).json({ message: 'hello' })
 }
