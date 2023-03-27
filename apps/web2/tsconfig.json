@@ -23,6 +23,7 @@
       "@/test-utils": ["../config/tests/test-utils"],
       "@/config/*": ["./config/*"],
       "@/lib/*": ["./lib/*"],
+      "@/utils/*": ["./utils/*"],
       "@/components/*": ["./components/*"],
       "@/features/*": ["./features/*"],
       "@/pages/*": ["./pages/*"],

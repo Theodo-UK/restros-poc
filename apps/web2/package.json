@@ -23,7 +23,6 @@
     "@heroicons/react": "^2.0.16",
     "@hookform/resolvers": "^3.0.0",
     "@httpx/exception": "^1.7.1",
-    "@vercel/analytics": "^0.1.11",
     "@wayofdev/facebook-pixel": "workspace:*",
     "@wayofdev/google-tag-manager": "workspace:*",
     "@wayofdev/lint-staged-config": "^2.0.2",

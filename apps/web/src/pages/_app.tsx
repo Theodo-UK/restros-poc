@@ -1,5 +1,3 @@
-import { FacebookPixelScript } from '@wayofdev/facebook-pixel/src'
-import { GoogleTagManagerScript } from '@wayofdev/google-tag-manager/src'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { appWithTranslation } from 'next-i18next'
@@ -43,8 +41,6 @@ const MyApp = (appProps: MyAppProps) => {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <GoogleTagManagerScript />
-      <FacebookPixelScript />
       {/* Workaround for https://github.com/vercel/next.js/issues/8592 */}
       <Component {...pageProps} err={err} />
     </AppProviders>
