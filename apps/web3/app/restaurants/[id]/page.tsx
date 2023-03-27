@@ -17,7 +17,7 @@ const getRestaurantDetails = async (restaurantId: string) => {
 }
 
 export default async function DetailsPage({ params }: { params: { id: string } }) {
-  const restaurant: Restaurant = await getRestaurantDetails(params?.id)
+  const restaurant: Restaurant = await getRestaurantDetails(params?.id as string)
 
   if (!restaurant) {
     return null

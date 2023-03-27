@@ -4,7 +4,7 @@ import { HomePage } from '@/features/home/pages'
 import { MOCK_RESTAURANTS } from '@/utils/restaurants'
 
 export default function DemoRoute(props: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <HomePage restaurant={props.data} />
+  return <HomePage {...props} />
 }
 
 export const getStaticProps: GetStaticProps = async () => {
