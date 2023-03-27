@@ -8,7 +8,7 @@ export type Restaurant = {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const MOCK_RESTAURANTS = [
+export const MOCK_RESTAURANTS: Restaurant[] = [
   {
     id: 1,
     name: 'La Taqueria',

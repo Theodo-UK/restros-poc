@@ -9,7 +9,7 @@ const openBrowserReport = process.env?.PLAYWRIGHT_OPEN_BROWSER_REPORT ?? 'never'
 const outputDir = path.join(__dirname, 'e2e/.out')
 
 // Use process.env.PORT by default and fallback to port 3000
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3003
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 const baseURL = `http://localhost:${port}`

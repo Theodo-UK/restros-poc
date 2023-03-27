@@ -9,7 +9,6 @@
 import { readFileSync } from 'node:fs'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import pc from 'picocolors'
-import nextI18nConfig from './next-i18next.config.js'
 
 /**
  * Once supported replace by node / eslint / ts and out of experimental, replace by
@@ -49,7 +48,6 @@ if (disableSourceMaps) {
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: !disableSourceMaps,
-  i18n: nextI18nConfig.i18n,
   optimizeFonts: false,
   images: {
     remotePatterns: [
@@ -70,7 +68,7 @@ const nextConfig = {
 
   // @link https://nextjs.org/docs/advanced-features/compiler#minification
   // Sometimes buggy so enable/disable when debugging.
-  swcMinify: false,
+  swcMinify: true,
 
   compiler: {
     // emotion: true,

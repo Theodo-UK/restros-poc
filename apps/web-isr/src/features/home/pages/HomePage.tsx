@@ -22,7 +22,7 @@ export const HomePage = (props: InferGetStaticPropsType<typeof getStaticProps>) 
         <Banner message="Something big will happen soon!" />
         <MainNav />
         <h1 className="my-6 mx-auto text-center text-2xl font-bold">Restros UK</h1>
-        {props.data.map((restaurant: Restaurant) => (
+        {props.data?.map((restaurant: Restaurant) => (
           <Card
             key={restaurant.name}
             title={restaurant.name}
