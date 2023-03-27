@@ -43,6 +43,7 @@
   "scripts": {
     "build": "turbo run build --color --parallel",
     "build:web": "turbo run build --filter=web --color --parallel",
+    "build:web-isr": "turbo run build --filter=web-isr --color --parallel",
     "build:docs": "turbo run build --filter=docs --color --parallel",
     "build:storybook": "turbo run build --filter=storybook --color --parallel",
     "build:ui": "turbo run build --filter=ui --color --parallel",

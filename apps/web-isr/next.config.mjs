@@ -1,34 +1,16 @@
 // @ts-check
-
-// This file sets a custom webpack configuration to use your Next.js app
-// with Sentry.
-// @link https://nextjs.org/docs/api-reference/next.config.js/introduction
-// @link https://docs.sentry.io/platforms/javascript/guides/nextjs/
-// @link https://github.com/vercel/next.js/tree/canary/examples/with-sentry
-
 import { readFileSync } from 'node:fs'
-import withBundleAnalyzer from '@next/bundle-analyzer'
-import { withSentryConfig } from '@sentry/nextjs' // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 import pc from 'picocolors'
-import nextI18nConfig from './next-i18next.config.js'
 
-/**
- * Once supported replace by node / eslint / ts and out of experimental, replace by
- * `import packageJson from './package.json' assert { type: 'json' };`
- * @type {import('type-fest').PackageJson}
- */
 const packageJson = JSON.parse(
   readFileSync(new URL('./package.json', import.meta.url)).toString('utf-8')
 )
 
 const trueEnv = ['true', '1', 'yes']
-const isProd = process.env.NODE_ENV === 'production'
 const isCI = trueEnv.includes(process.env?.CI ?? 'false')
 
 const NEXT_IGNORE_TYPE_CHECK = trueEnv.includes(process.env?.NEXT_IGNORE_TYPE_CHECK ?? 'false')
 const NEXT_IGNORE_ESLINT = trueEnv.includes(process.env?.NEXT_IGNORE_ESLINT ?? 'false')
-const SENTRY_UPLOAD_DRY_RUN = trueEnv.includes(process.env?.SENTRY_UPLOAD_DRY_RUN ?? 'false')
-const DISABLE_SENTRY = trueEnv.includes(process.env?.DISABLE_SENTRY ?? 'false')
 const SENTRY_DEBUG = trueEnv.includes(process.env?.SENTRY_DEBUG ?? 'false')
 const SENTRY_TRACING = trueEnv.includes(process.env?.SENTRY_TRACING ?? 'false')
 
@@ -37,7 +19,7 @@ const SENTRY_TRACING = trueEnv.includes(process.env?.SENTRY_TRACING ?? 'false')
  * to deliver an image or deploy the files.
  * @link https://nextjs.org/docs/advanced-features/source-maps
  */
-const disableSourceMaps = true
+const disableSourceMaps = false
 
 if (disableSourceMaps) {
   console.log(
@@ -53,7 +35,6 @@ if (disableSourceMaps) {
 const nextConfig = {
   reactStrictMode: true,
   productionBrowserSourceMaps: !disableSourceMaps,
-  i18n: nextI18nConfig.i18n,
   optimizeFonts: false,
   images: {
     remotePatterns: [
@@ -74,7 +55,7 @@ const nextConfig = {
 
   // @link https://nextjs.org/docs/advanced-features/compiler#minification
   // Sometimes buggy so enable/disable when debugging.
-  swcMinify: false,
+  swcMinify: true,
 
   compiler: {
     // emotion: true,
@@ -86,26 +67,6 @@ const nextConfig = {
 
   // Optional build-time configuration options
   sentry: {
-    // See the sections below for information on the following options:
-    //   'Configure Source Maps':
-    //     - disableServerWebpackPlugin
-    //     - disableClientWebpackPlugin
-    //     - hideSourceMaps
-    //     - widenClientFileUpload
-    //   'Configure Legacy Browser Support':
-    //     - transpileClientSDK
-    //   'Configure Serverside Auto-instrumentation':
-    //     - autoInstrumentServerFunctions
-    //     - excludeServerRoutes
-    //   'Configure Tunneling to avoid Ad-Blockers':
-    //     - tunnelRoute
-    //
-    // Use `hidden-source-map` rather than `source-map` as the Webpack `devtool`
-    // for client-side builds. (This will be the default starting in
-    // `@sentry/nextjs` version 8.0.0.) See
-    // https://webpack.js.org/configuration/devtool/ and
-    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
-    // for more information.
     hideSourceMaps: true,
   },
 
@@ -116,18 +77,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: NEXT_IGNORE_ESLINT,
     // dirs: [`${__dirname}/src`],
-  },
-
-  // @link https://nextjs.org/docs/api-reference/next.config.js/rewrites
-  async rewrites() {
-    return [
-      /*
-      {
-        source: `/about-us`,
-        destination: '/about',
-      },
-      */
-    ]
   },
 
   webpack: (config, { webpack, isServer }) => {
@@ -181,12 +130,6 @@ let config = nextConfig
 
 const { sentry, ...rest } = config
 config = rest
-
-if (process.env.ANALYZE === 'true') {
-  config = withBundleAnalyzer({
-    enabled: false,
-  })(config)
-}
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins

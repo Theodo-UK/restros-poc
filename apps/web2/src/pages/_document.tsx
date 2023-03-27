@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/react'
 import { FacebookPixelNoScript } from '@wayofdev/facebook-pixel/src'
 import { GoogleTagManagerNoScript } from '@wayofdev/google-tag-manager/src'
 import type { DocumentContext, DocumentInitialProps } from 'next/document'
@@ -46,7 +45,6 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-        <Analytics />
         <GoogleTagManagerNoScript />
         <FacebookPixelNoScript />
       </Html>
