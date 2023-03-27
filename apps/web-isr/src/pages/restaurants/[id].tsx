@@ -9,13 +9,13 @@ export default function DemoRoute(props: InferGetStaticPropsType<typeof getStati
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const restaurantId = params?.id
-  const { data } = await axios.get(`http://localhost:3000/api/restaurants/${restaurantId}`)
+  const { data } = await axios.get(`http://localhost:3003/api/restaurants/${restaurantId}`)
 
   return { props: { data }, revalidate: 10 }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data: restaurants } = await axios.get(`http://localhost:3000/api/restaurants`)
+  const { data: restaurants } = await axios.get(`http://localhost:3003/api/restaurants`)
   const topFiveRestaurants = restaurants.slice(0, 5)
 
   const paths = topFiveRestaurants.map(restaurant => ({

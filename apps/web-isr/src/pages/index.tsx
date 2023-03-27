@@ -7,7 +7,7 @@ export default function DemoRoute(_props: InferGetServerSidePropsType<typeof get
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const { data } = await axios.get('http://localhost:3000/api/restaurants')
+  const { data } = await axios.get('http://localhost:3003/api/restaurants')
 
   return { props: { data } }
 }
